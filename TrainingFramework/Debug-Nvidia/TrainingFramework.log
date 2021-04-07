@@ -1,0 +1,29 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  Application.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  TrainingFramework.cpp
+  GameStatebase.cpp
+  GameStateMachine.cpp
+  GSVictory.cpp
+  GSPlayAgainMenu.cpp
+  GSPlay.cpp
+  GSMenu.cpp
+  GSIntro.cpp
+  GSAboutMe.cpp
+  Texture.cpp
+  Text.cpp
+  Sprite3D.cpp
+  Sprite2D.cpp
+  Shaders.cpp
+  Models.cpp
+  MainCharacter.cpp
+  GameButton.cpp
+  Font.cpp
+  Enemy.cpp
+  Camera.cpp
+  Bullet.cpp
+  BossEnemy.cpp
+  Animation2D.cpp
+  ResourceManagers.cpp
+  TrainingFramework.vcxproj -> E:\LEAP2021_Bahamut\BIN-Nvidia\Bahamut.exe

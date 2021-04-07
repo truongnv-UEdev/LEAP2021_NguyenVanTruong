@@ -1,0 +1,137 @@
+#include "GSVictory.h"
+
+extern int screenWidth; //need get on Graphic engine
+extern int screenHeight; //need get on Graphic engine
+
+GSVictory::GSVictory()
+{
+
+}
+
+
+GSVictory::~GSVictory()
+{
+}
+
+
+
+void GSVictory::Init()
+{
+	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
+
+
+	//Sound
+	ResourceManagers::GetInstance()->PlaySound("bg_PlayAgain_Sound.wav", true);
+
+	//BackGround
+	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_play1");
+	m_BackGround1 = std::make_shared<Sprite2D>(model, shader, texture);
+	m_BackGround1->Set2DPosition(screenWidth / 2, screenHeight / 2);
+	m_BackGround1->SetSize(screenWidth, screenHeight);
+	m_BackGround2 = std::make_shared<Sprite2D>(model, shader, texture);
+	m_BackGround2->Set2DPosition(screenWidth / 2, screenHeight / 2 - screenHeight);
+	m_BackGround2->SetSize(screenWidth, screenHeight);
+
+
+	//play button
+	texture = ResourceManagers::GetInstance()->GetTexture("button_continue");
+	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
+	button->Set2DPosition(screenWidth / 2, screenHeight / 2);
+	button->SetSize(250, 60);
+	button->SetOnClick([]() {
+		ResourceManagers::GetInstance()->StopAllSound();
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
+		});
+	m_listButton.push_back(button);
+
+
+
+	//exit button
+	texture = ResourceManagers::GetInstance()->GetTexture("button_menu");
+	button = std::make_shared<GameButton>(model, shader, texture);
+	button->Set2DPosition(screenWidth / 2, (screenHeight / 2) + 75);
+	button->SetSize(250, 60);
+	button->SetOnClick([]() {
+		ResourceManagers::GetInstance()->StopAllSound();
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
+		});
+	m_listButton.push_back(button);
+
+	//text
+	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
+	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
+	m_Text = std::make_shared<Text>(shader, font, "VICTORY!", TEXT_COLOR::GREEN, 4.0);
+	m_Text->Set2DPosition(Vector2(screenWidth / 4, screenHeight / 6));
+
+}
+
+void GSVictory::Exit()
+{
+}
+
+
+void GSVictory::Pause()
+{
+
+}
+
+void GSVictory::Resume()
+{
+
+}
+
+
+void GSVictory::HandleEvents()
+{
+
+}
+
+void GSVictory::HandleKeyEvents(int key, bool bIsPressed)
+{
+
+}
+
+void GSVictory::HandleTouchEvents(int x, int y, bool bIsPressed)
+{
+	for (auto it : m_listButton)
+	{
+		(it)->HandleTouchEvents(x, y, bIsPressed);
+		if ((it)->IsHandle()) break;
+	}
+}
+
+void GSVictory::Update(float deltaTime)
+{
+
+	//Background
+	MoveBackground(deltaTime);
+
+
+	for (auto it : m_listButton)
+	{
+		it->Update(deltaTime);
+	}
+}
+
+void GSVictory::Draw()
+{
+	m_BackGround1->Draw();
+	m_BackGround2->Draw();
+	m_Text->Draw();
+	for (auto it : m_listButton)
+	{
+		it->Draw();
+	}
+}
+
+void GSVictory::MoveBackground(GLfloat deltaTime) {
+	//Background
+	if (m_BackGround1->Get2DPosition().y > (screenHeight / 2 + screenHeight)) {
+		m_BackGround1->Set2DPosition(screenWidth / 2, screenHeight / 2);
+		m_BackGround2->Set2DPosition(screenWidth / 2, screenHeight / 2 - screenHeight);
+	}
+	m_BackGround1->Set2DPosition(screenWidth / 2, m_BackGround1->Get2DPosition().y + 100.0f * deltaTime);
+	m_BackGround2->Set2DPosition(screenWidth / 2, m_BackGround2->Get2DPosition().y + 100.0f * deltaTime);
+}
+
